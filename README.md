@@ -1,4 +1,4 @@
-# Boilerplate - Node.js TypeScript com Clean Architecture e DDD
+# Boilerplate Node TypeScript - Clean Architecture e DDD
 
 Este boilerplate foi criado para fornecer uma base sólida para o desenvolvimento de aplicações de back-end utilizando **Node.js**, **TypeScript**, **Clean Architecture** e **Domain-Driven Design (DDD)**. A estrutura organizada, escalável e modular facilita a criação de sistemas bem estruturados, facilmente testáveis e de fácil manutenção.
 
