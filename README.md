@@ -22,11 +22,10 @@ A estrutura do projeto segue uma organização modular, com camadas bem definida
 /src
   ├── /config               # Configurações gerais do projeto
   ├── /domain               # Entidades, repositórios e lógica de negócios
-  ├── /infra                # Implementações de infraestrutura (banco de dados, serviços externos)
+  ├── /infrastructure       # Implementações de infraestrutura (banco de dados, serviços externos)
   ├── /presentation         # Controladores e rotas de API
   ├── /application          # Casos de uso e lógica de aplicação
   ├── /shared               # Utilitários e middlewares compartilhados
-  └── /utils                # Funções auxiliares
 ```
 
 ## 🛠️ Funcionalidades Principais
@@ -42,13 +41,13 @@ A estrutura do projeto segue uma organização modular, com camadas bem definida
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   git clone https://github.com/LeandroS4nt0s/clean-solid-service-ts.git
    ```
 
 2. Navegue até o diretório do projeto:
 
    ```bash
-   cd nome-do-repositorio
+   cd clean-solid-service-ts
    ```
 
 3. Instale as dependências:
@@ -132,12 +131,6 @@ Os testes unitários e de integração podem ser adicionados facilmente devido �
 1. Faça um fork deste repositório.
 2. Crie uma branch para a sua feature (git checkout -b minha-feature).
 3. Faça as alterações necessárias e envie um pull request.
-
----
-
-## Licença
-
-Este projeto está licenciado sob a MIT License.
 
 ---
 
