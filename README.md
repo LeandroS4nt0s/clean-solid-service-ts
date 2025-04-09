@@ -65,10 +65,6 @@
 
     A injeção da `InvoiceRepositoryInterface` no `FindByFilterInvoiceUseCase` permite que você utilize diferentes implementações de repositório (`InvoiceRepositoryImpl`) sem alterar a lógica do caso de uso. Isso seria útil, por exemplo, se você decidisse mudar a forma como os dados são persistidos (outro banco de dados, um serviço externo, etc.).
 
-    ```typescript
-    // FindByFilterInvoiceUseCase.ts (já mostrado anteriormente)
-    ```
-
 5.  **Tratamento de Erros Robusto e Centralizado**
     O tratamento de erros é cuidadosamente implementado para fornecer uma experiência de desenvolvimento mais suave e respostas consistentes para o cliente:
 
@@ -122,8 +118,6 @@
       ```
 
 6.  **Organizações de Donos de Bibliotecas Importantes**
-    (A descrição original já era boa, mas podemos enfatizar a confiabilidade)
-
     As bibliotecas mais importantes utilizadas neste template são pilares da comunidade JavaScript e TypeScript, mantidas por organizações e comunidades de código aberto com um histórico comprovado de estabilidade e suporte ativo:
 
     - **Node.js**: Desenvolvido e mantido pela Node.js Foundation, essencial para a execução do seu back-end JavaScript.
