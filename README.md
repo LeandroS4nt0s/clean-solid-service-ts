@@ -1,125 +1,176 @@
-Boilerplate Node TypeScript - Clean Architecture e DDD
+# 🚀 Boilerplate Node.js TypeScript - Clean Architecture & DDD
 
-Este boilerplate foi criado para fornecer uma base sólida e escalável para o desenvolvimento de aplicações back-end com Node.js, TypeScript, Clean Architecture e Domain-Driven Design (DDD). Ele oferece uma estrutura modular e testável, permitindo que você construa sistemas facilmente manuteníveis, seguros e escaláveis, enquanto foca nas regras de negócio.
+Este boilerplate foi cuidadosamente estruturado para fornecer uma base sólida e altamente escalável para o desenvolvimento de aplicações back-end robustas com Node.js e TypeScript, adotando os princípios da Clean Architecture e do Domain-Driven Design (DDD). Ele oferece uma organização modular e totalmente testável, permitindo que você construa sistemas manuteníveis, seguros e com foco total nas regras de negócio.
 
-Por Que Usar Este Template?
+## ✨ Por Que Escolher Este Template?
 
-1. Arquitetura Limpa (Clean Architecture)
-   A estrutura segue os princípios de Clean Architecture, garantindo uma clara separação de responsabilidades entre as diferentes camadas do sistema. Isso significa que sua aplicação é:
+1.  **Arquitetura Limpa (Clean Architecture)**
+    A espinha dorsal deste boilerplate é a Clean Architecture, que promove uma separação clara de responsabilidades entre as diversas camadas do seu sistema. Os benefícios são evidentes:
 
-- Escalável: Você pode adicionar novas funcionalidades de forma modular, sem comprometer o código existente.
-- Fácil de manter: Alterações em uma camada não afetam as outras camadas, facilitando a manutenção a longo prazo.
-- Fácil de testar: A separação das camadas facilita a criação de testes unitários e de integração.
+    - **Escalabilidade:** Adicione novas funcionalidades de forma isolada, sem impactar o código existente.
+    - **Manutenibilidade:** Altere componentes específicos sem afetar outras partes do sistema, simplificando a manutenção a longo prazo.
+    - **Testabilidade:** A separação de camadas facilita a criação de testes unitários e de integração eficazes.
 
-2. Domain-Driven Design (DDD)
-   Com o DDD, as entidades e a lógica de negócios estão isoladas da infraestrutura e da interface. Isso permite que você:
+2.  **Domain-Driven Design (DDD)**
+    Ao adotar o DDD, isolamos as entidades e a lógica de negócios da infraestrutura e da interface do usuário. Isso capacita você a:
 
-- Crie modelos de domínio ricos, facilitando o entendimento do negócio e a colaboração entre equipes.
-- Mantenha a lógica de negócios isolada e centrada em torno de entidades, tornando o código mais coeso.
+    - **Modelos de Domínio Ricos:** Crie modelos que representam fielmente o negócio, facilitando o entendimento e a colaboração entre equipes.
+    - **Lógica de Negócios Coesa:** Mantenha a lógica centralizada nas entidades, resultando em um código mais organizado e expressivo.
 
-3. Injeção de Dependências
-   A injeção de dependências, utilizando a biblioteca tsyringe, permite:
+3.  **Injeção de Dependências (tsyringe)**
+    A biblioteca `tsyringe` simplifica o gerenciamento de dependências, oferecendo:
 
-- Facilidade para gerenciar dependências: O gerenciamento de dependências é feito de maneira centralizada, facilitando a testabilidade e a manutenção do código.
-- Adoção de boas práticas: A separação de responsabilidades é promovida pela injeção de dependências, reduzindo o acoplamento entre as classes.
+    - **Gerenciamento Centralizado:** Facilidade para declarar e resolver dependências, melhorando a testabilidade e a manutenção.
+    - **Boas Práticas:** Fomenta a separação de responsabilidades e reduz o acoplamento entre classes.
 
-Exemplo:
-@injectable()
-export class FindByFilterInvoiceUseCase {
-constructor(@inject(InvoiceRepositoryImpl) private repository: InvoiceRepositoryInterface) {}
-// Lógica de negócios
-}
+    ```typescript
+    import { injectable, inject } from 'tsyringe'
+    import { InvoiceRepositoryInterface } from '@domain/repositories/InvoiceRepositoryInterface'
+    import { InvoiceEntity } from '@domain/entities/InvoiceEntity'
+    import { FilterInvoicesDTO } from '@application/dtos/FilterInvoicesDTO'
+    import { InvoiceFilterCriteria } from '@domain/repositories/criteria/InvoiceFilterCriteria'
 
-4. Facilidade de Troca de Implementações
+    @injectable()
+    export class FindByFilterInvoiceUseCase {
+      constructor(@inject('InvoiceRepository') private repository: InvoiceRepositoryInterface) {}
 
-Não só a troca do banco de dados é facilitada, mas também outras implementações, como a troca de repositórios, serviços ou validações.
+      async execute(dto: FilterInvoicesDTO): Promise<InvoiceEntity[]> {
+        const criteria: InvoiceFilterCriteria = {
+          referenceMonth: dto.referenceMonth,
+          customerNumber: dto.customerNumber,
+        }
+        return this.repository.findByFilters(criteria)
+      }
+    }
+    ```
 
-Troca de Implementação de Banco de Dados
-A estrutura foi projetada de maneira que a troca entre as implementações de banco de dados (como MySQL e PostgreSQL) é simples. O código está organizado de forma modular, e a troca entre as implementações requer apenas uma pequena modificação na configuração do container de dependências.
+4.  **Flexibilidade na Troca de Implementações**
+    Este boilerplate vai além da simples troca de bancos de dados, facilitando a substituição de repositórios, serviços e validações com mínimo esforço.
 
-Exemplo de implementação para MySQL:
-import { container } from 'tsyringe'
-import { MySQLImplementation } from '@infra/database/implementation'
+    ### 🔄 Troca de Implementação de Banco de Dados
 
-container.registerSingleton<DataBaseInterface<unknown>>('DataBaseService', MySQLImplementation)
+    A arquitetura modular permite a substituição de implementações de banco de dados (como MySQL e PostgreSQL) de forma transparente. A alteração se resume a uma pequena modificação na configuração do container de dependências.
 
-Exemplo de implementação para PostgreSQL:
-import { container } from 'tsyringe'
-import { PostgresImplementation } from '@infra/database/implementation'
+    **Exemplo para MySQL:**
 
-container.registerSingleton<DataBaseInterface<unknown>>('DataBaseService', PostgresImplementation)
+    ```typescript
+    import { container } from 'tsyringe'
+    import { MySQLImplementation } from '@infra/database/implementations/MySQLImplementation'
+    import { DataBaseInterface } from '@infra/database/DataBaseInterface'
 
-Troca de Repositórios
-A flexibilidade também se estende aos repositórios. O repositório InvoiceRepositoryImpl poderia ser facilmente trocado por outro repositório sem afetar a lógica de negócio ou a API. A camada de infraestrutura é desacoplada da camada de domínio, o que permite que você altere as implementações de persistência sem impacto nas camadas superiores.
+    container.registerSingleton<DataBaseInterface>('DataBaseService', MySQLImplementation)
+    ```
 
-Exemplo:
+    **Exemplo para PostgreSQL:**
 
-// Troca de Repositório de Fatura
-@injectable()
-export class FindByFilterInvoiceUseCase {
-constructor(@inject(InvoiceRepositoryImpl) private repository: InvoiceRepositoryInterface) {}
-async execute(dto: FilterInvoicesDTO): Promise<InvoiceEntity[]> {
-const criteria: InvoiceFilterCriteria = {
-referenceMonth: dto.referenceMonth,
-customerNumber: dto.customerNumber,
-}
+    ```typescript
+    import { container } from 'tsyringe'
+    import { PostgresImplementation } from '@infra/database/implementations/PostgresImplementation'
+    import { DataBaseInterface } from '@infra/database/DataBaseInterface'
 
-    return this.repository.findByFilters(criteria)
+    container.registerSingleton<DataBaseInterface>('DataBaseService', PostgresImplementation)
+    ```
 
-}
-}
+    ### 🔩 Troca de Repositórios
 
-5. Tratamento de Erros
+    A mesma flexibilidade se aplica aos repositórios. A `InvoiceRepositoryImpl` pode ser facilmente substituída por outra implementação sem afetar a lógica de negócios ou a camada de API, graças ao desacoplamento entre as camadas de domínio e infraestrutura.
 
-O tratamento de erros foi simplificado com a implementação do asyncHandler e o middleware de erro.
+    **Exemplo:**
 
-O **asyncHandler** ajuda a tratar erros assíncronos de forma centralizada, evitando a repetição de blocos try/catch em cada rota.
+    ```typescript
+    import { injectable, inject } from 'tsyringe'
+    import { InvoiceRepositoryInterface } from '@domain/repositories/InvoiceRepositoryInterface'
+    import { InvoiceEntity } from '@domain/entities/InvoiceEntity'
+    import { FilterInvoicesDTO } from '@application/dtos/FilterInvoicesDTO'
+    import { InvoiceFilterCriteria } from '@domain/repositories/criteria/InvoiceFilterCriteria'
 
-Exemplo de uso do asyncHandler:
-import { asyncHandler } from '@shared/wrappers/asyncHandler'
+    @injectable()
+    export class FindByFilterInvoiceUseCase {
+      constructor(@inject('InvoiceRepository') private repository: InvoiceRepositoryInterface) {}
 
-InvoiceRoutes.get(
-'/',
-asyncHandler(listAllInvoicesController.handle.bind(listAllInvoicesController))
-)
-InvoiceRoutes.get(
-'/filter',
-asyncHandler(findByFilterInvoiceController.handle.bind(findByFilterInvoiceController))
-)
+      async execute(dto: FilterInvoicesDTO): Promise<InvoiceEntity[]> {
+        const criteria: InvoiceFilterCriteria = {
+          referenceMonth: dto.referenceMonth,
+          customerNumber: dto.customerNumber,
+        }
+        return this.repository.findByFilters(criteria)
+      }
+    }
+    ```
 
-O **middleware de erro** centraliza o tratamento de erros, permitindo que você capture exceções e retorne respostas adequadas ao cliente.
+5.  **Tratamento de Erros Simplificado**
+    O tratamento de erros é facilitado pela integração do `asyncHandler` e um middleware de erro dedicado.
 
-Exemplo de uso do middleware de erro:
-import { errorMiddleware } from '@shared/middlewares/errorMiddleware'
+    O **`asyncHandler`** simplifica o tratamento de erros assíncronos, eliminando a necessidade de blocos `try/catch` repetitivos em suas rotas.
 
-class Server {
-private app: Express
-private port: number
+    **Exemplo de uso:**
 
-constructor() {
-this.app = express()
-this.port = env.PORT
-}
+    ```typescript
+    import { Router } from 'express'
+    import { asyncHandler } from '@shared/wrappers/asyncHandler'
+    import { ListAllInvoicesController } from '@infra/http/controllers/ListAllInvoicesController'
+    import { FindByFilterInvoiceController } from '@infra/http/controllers/FindByFilterInvoiceController'
+    import { container } from 'tsyringe'
 
-private setMiddlewares(): void {
-this.app.use(helmet())
-this.app.use(morgan('dev'))
-this.app.use(cors(appConfig.cors))
-this.app.use(express.json())
-this.app.use(errorMiddleware) // Middleware de erro
-}
-}
+    const InvoiceRoutes = Router()
+    const listAllInvoicesController = container.resolve(ListAllInvoicesController)
+    const findByFilterInvoiceController = container.resolve(FindByFilterInvoiceController)
 
-6. Organizações de Donos de Bibliotecas Importantes
+    InvoiceRoutes.get(
+      '/',
+      asyncHandler(listAllInvoicesController.handle.bind(listAllInvoicesController))
+    )
+    InvoiceRoutes.get(
+      '/filter',
+      asyncHandler(findByFilterInvoiceController.handle.bind(findByFilterInvoiceController))
+    )
 
-As bibliotecas mais importantes utilizadas neste template têm donos relevantes que contribuem para a comunidade de código aberto:
+    export { InvoiceRoutes }
+    ```
 
-- **Node.js**: Desenvolvido e mantido pela Node.js Foundation.
-- **TypeScript**: Criado e mantido pela Microsoft.
-- **TypeORM**: Criado e mantido pela comunidade de código aberto.
-- **tsyringe**: Desenvolvido pela comunidade, com foco em injeção de dependências para TypeScript.
-- **Zod**: Biblioteca para validação de esquemas, mantida por uma comunidade ativa.
-- **Express**: Criado e mantido pela comunidade, utilizado como framework HTTP minimalista.
-- **Helmet**: Criado e mantido pela comunidade para segurança em aplicações Express.
-- **Morgan**: Biblioteca de logging HTTP mantida pela comunidade.
-- **dotenv**: Utilizado para carregar variáveis de ambiente, mantido pela comunidade.
+    O **middleware de erro** centraliza a captura e o tratamento de exceções, permitindo respostas consistentes e informativas para o cliente.
+
+    **Exemplo de uso:**
+
+    ```typescript
+    import express, { Express } from 'express'
+    import helmet from 'helmet'
+    import morgan from 'morgan'
+    import cors from 'cors'
+    import { errorMiddleware } from '@shared/middlewares/errorMiddleware'
+    import { AppConfig } from '@config/app'
+    import { EnvironmentConfig } from '@config/environment'
+
+    class Server {
+      private app: Express
+      private port: number
+
+      constructor() {
+        this.app = express()
+        this.port = EnvironmentConfig.PORT
+      }
+
+      private setMiddlewares(): void {
+        this.app.use(helmet())
+        this.app.use(morgan('dev'))
+        this.app.use(cors(AppConfig.cors))
+        this.app.use(express.json())
+        this.app.use(errorMiddleware) // Middleware de erro
+      }
+
+      // ... outras configurações do servidor
+    }
+    ```
+
+6.  **Baseado em Bibliotecas Robustas e Mantidas Ativamente**
+    As principais bibliotecas utilizadas neste template são mantidas por organizações e comunidades de código aberto confiáveis:
+
+    - **Node.js:** Desenvolvido e mantido pela Node.js Foundation.
+    - **TypeScript:** Criado e mantido pela Microsoft.
+    - **TypeORM:** Criado e mantido por uma comunidade ativa.
+    - **tsyringe:** Desenvolvido pela comunidade, com foco em injeção de dependências para TypeScript.
+    - **Zod:** Biblioteca de validação de esquemas mantida por uma comunidade ativa.
+    - **Express:** Criado e mantido pela comunidade, um framework HTTP minimalista e amplamente utilizado.
+    - **Helmet:** Mantido pela comunidade para segurança em aplicações Express.
+    - **Morgan:** Biblioteca de logging HTTP mantida pela comunidade.
+    - **dotenv:** Utilizado para carregar variáveis de ambiente, mantido pela comunidade.
