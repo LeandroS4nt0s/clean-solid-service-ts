@@ -1,76 +1,92 @@
+# Boilerplate - Node.js TypeScript com Clean Architecture e DDD
 
-# Boilerplate - Node.js TypeScript - Clean Architecture
+Este boilerplate foi criado para fornecer uma base sólida para o desenvolvimento de aplicações de back-end utilizando **Node.js**, **TypeScript**, **Clean Architecture** e **Domain-Driven Design (DDD)**. A estrutura organizada, escalável e modular facilita a criação de sistemas bem estruturados, facilmente testáveis e de fácil manutenção.
 
-Este é um boilerplate de projeto Node.js utilizando TypeScript e seguindo o padrão Clean Architecture. Ele oferece uma estrutura organizada e escalável para construção de aplicações de back-end, com foco em manter um código bem estruturado, facilmente testável e de fácil manutenção.
+## 🚀 Tecnologias e Dependências
 
-## Tecnologias e Dependências
+- **Node.js com Express**: Framework de servidor HTTP rápido e minimalista.
+- **TypeScript**: Linguagem que adiciona tipagem estática ao JavaScript, aumentando a segurança e a legibilidade do código.
+- **TypeORM**: ORM que facilita a interação com bancos de dados, como MySQL.
+- **tsyringe**: Biblioteca para injeção de dependências, promovendo a separação de responsabilidades.
+- **Zod**: Ferramenta para validação de dados com tipagem estática.
+- **Helmet**: Middleware para segurança da aplicação.
+- **Morgan**: Middleware para registro de logs HTTP.
+- **Cors**: Middleware para configurar políticas de CORS.
+- **dotenv**: Carregamento de variáveis de ambiente de um arquivo `.env`.
 
-- Node.js com Express: Framework de servidor HTTP.
-- TypeScript: Linguagem baseada em JavaScript, trazendo tipagem estática para melhorar a qualidade do código.
-- TypeORM: ORM para trabalhar com bancos de dados, neste caso com suporte a MySQL.
-- tsyringe: Injeção de dependências para gerenciar a criação e o ciclo de vida dos objetos.
-- Zod: Biblioteca para validação de dados com tipagem estática.
-- Helmet: Middleware de segurança para proteger a aplicação.
-- Morgan: Middleware de logging HTTP.
-- Cors: Middleware para configurar políticas de CORS.
-- dotenv: Carregamento das variáveis de ambiente de um arquivo .env.
+## 📂 Estrutura do Projeto
 
-## Estrutura do Projeto
+A estrutura do projeto segue uma organização modular, com camadas bem definidas, baseada em **Clean Architecture** e **DDD**:
 
-A estrutura de diretórios do projeto é organizada da seguinte maneira:
-
+```plaintext
 /src
-  ├── /config               # Configurações de ambiente e variáveis
-  ├── /domain               # Entidades e lógica de negócios
-  ├── /infra                # Implementações de infraestrutura (ex: banco de dados, serviços externos)
+  ├── /config               # Configurações gerais do projeto
+  ├── /domain               # Entidades, repositórios e lógica de negócios
+  ├── /infra                # Implementações de infraestrutura (banco de dados, serviços externos)
   ├── /presentation         # Controladores e rotas de API
   ├── /application          # Casos de uso e lógica de aplicação
   ├── /shared               # Utilitários e middlewares compartilhados
-  └── /utils                # Funções e helpers utilitários
+  └── /utils                # Funções auxiliares
+```
 
-## Funcionalidades
+## 🛠️ Funcionalidades Principais
 
-1. Servidor Express: O servidor é configurado com segurança e logging através dos middlewares helmet, morgan, cors, entre outros.
-2. Banco de Dados MySQL: A conexão com o banco de dados MySQL é feita de forma automática e robusta. Se o banco não existir, ele será criado. A conexão é feita utilizando o TypeORM.
-3. Injeção de Dependências: Utiliza o tsyringe para garantir a injeção de dependências nas classes e serviços, facilitando testes e organização.
-4. Validação de Dados com Zod: A entrada de dados via parâmetros de query e corpo das requisições é validada com Zod.
-5. Estrutura de Casos de Uso: A lógica de negócios e os casos de uso estão separados de forma a manter a aplicação organizada e de fácil manutenção.
+- **Servidor Express**: Configuração robusta com segurança e logging, utilizando middlewares como Helmet, Morgan e CORS.
+- **Banco de Dados MySQL**: Conexão automática com MySQL via TypeORM. Caso o banco não exista, ele será criado.
+- **Injeção de Dependências**: Uso de `tsyringe` para gerenciar a criação de instâncias e facilitar testes.
+- **Validação de Dados com Zod**: Validação de entrada de dados para garantir consistência e segurança nas requisições.
+- **DDD e Clean Architecture**: Camadas bem separadas (presentation, application, domain, infrastructure) para manter o código organizado, modular e fácil de escalar.
 
-## Como Rodar o Projeto
+## ⚙️ Como Rodar o Projeto
 
 1. Clone o repositório:
-    git clone https://github.com/seu-usuario/nome-do-repositorio.git
+
+   ```bash
+   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   ```
 
 2. Navegue até o diretório do projeto:
-    cd nome-do-repositorio
+
+   ```bash
+   cd nome-do-repositorio
+   ```
 
 3. Instale as dependências:
-    npm install
 
-4. Crie um arquivo .env na raiz do projeto e defina as variáveis de ambiente necessárias. Exemplo:
-    NODE_ENV=development
-    PORT=3000
-    DB_CLIENT=mysql
-    DB_HOST=localhost
-    DB_PORT=3306
-    DB_USER=root
-    DB_PASSWORD=root
-    DB_NAME=mydb
-    CORS_ORIGIN=http://localhost:8080
+   ```bash
+   npm install
+   ```
+
+4. Crie um arquivo `.env` na raiz do projeto e defina as variáveis de ambiente necessárias. Exemplo:
+
+   ```plaintext
+   NODE_ENV=development
+   PORT=3000
+   DB_CLIENT=mysql
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=root
+   DB_NAME=mydb
+   CORS_ORIGIN=http://localhost:8080
+   ```
 
 5. Execute o projeto:
-    npm run dev
 
-6. O servidor estará rodando no endereço http://localhost:3000.
+   ```bash
+   npm run dev
+   ```
 
-## Arquitetura
+6. O servidor estará disponível em `http://localhost:3000`.
 
-Este boilerplate segue os princípios da Clean Architecture, onde temos uma separação clara entre as camadas da aplicação:
+## 🏗️ Arquitetura
 
-- **Presentation Layer**: Controladores e rotas, como FindByFilterInvoiceController, recebem e processam as requisições HTTP.
-- **Application Layer**: Casos de uso, como FindByFilterInvoiceUseCase, contêm a lógica de aplicação e orquestram as interações com o domínio.
-- **Domain Layer**: Entidades como InvoiceEntity, que são a representação central do negócio, e interfaces de repositório.
-- **Infrastructure Layer**: Implementações específicas de infraestrutura, como o acesso a dados utilizando o MySQLImplementation e InvoiceRepositoryImpl.
+Este boilerplate segue a arquitetura **Clean Architecture** com os seguintes princípios:
+
+- **Presentation Layer**: Responsável por interagir com o mundo externo (controladores e rotas).
+- **Application Layer**: Contém a lógica da aplicação e casos de uso.
+- **Domain Layer**: Define as entidades e regras de negócios do sistema.
+- **Infrastructure Layer**: Implementação de detalhes, como acesso a banco de dados e serviços externos.
 
 ## Como Adicionar Novas Funcionalidades
 
@@ -106,7 +122,7 @@ export { AppRoutes }
 Os testes unitários e de integração podem ser adicionados facilmente devido à separação clara de responsabilidades nas camadas do sistema.
 
 - Para realizar os testes, você pode criar testes para os casos de uso, testes para os controladores e testes para as entidades.
-  
+
   Recomendação: Utilize frameworks como Jest para facilitar a escrita e execução de testes.
 
 ---
