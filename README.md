@@ -59,15 +59,15 @@ A estrutura do projeto segue uma organização modular, com camadas bem definida
 4. Crie um arquivo `.env` na raiz do projeto e defina as variáveis de ambiente necessárias. Exemplo:
 
    ```plaintext
-   NODE_ENV=development
-   PORT=3000
-   DB_CLIENT=mysql
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_USER=root
-   DB_PASSWORD=root
-   DB_NAME=mydb
-   CORS_ORIGIN=http://localhost:8080
+      NODE_ENV=development
+      PORT=3000
+      DB_CLIENT=mysql
+      DB_HOST=localhost
+      DB_PORT=3306
+      DB_USER=root
+      DB_PASSWORD=root
+      DB_NAME=mydb
+      CORS_ORIGIN=http://localhost:8080
    ```
 
 5. Execute o projeto:
