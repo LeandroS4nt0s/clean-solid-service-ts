@@ -1,137 +1,125 @@
-# Boilerplate Node TypeScript - Clean Architecture e DDD
+Boilerplate Node TypeScript - Clean Architecture e DDD
 
-Este boilerplate foi criado para fornecer uma base sólida para o desenvolvimento de aplicações de back-end utilizando **Node.js**, **TypeScript**, **Clean Architecture** e **Domain-Driven Design (DDD)**. A estrutura organizada, escalável e modular facilita a criação de sistemas bem estruturados, facilmente testáveis e de fácil manutenção.
+Este boilerplate foi criado para fornecer uma base sólida e escalável para o desenvolvimento de aplicações back-end com Node.js, TypeScript, Clean Architecture e Domain-Driven Design (DDD). Ele oferece uma estrutura modular e testável, permitindo que você construa sistemas facilmente manuteníveis, seguros e escaláveis, enquanto foca nas regras de negócio.
 
-## 🚀 Tecnologias e Dependências
+Por Que Usar Este Template?
 
-- **Node.js com Express**: Framework de servidor HTTP rápido e minimalista.
-- **TypeScript**: Linguagem que adiciona tipagem estática ao JavaScript, aumentando a segurança e a legibilidade do código.
-- **TypeORM**: ORM que facilita a interação com bancos de dados, como MySQL.
-- **tsyringe**: Biblioteca para injeção de dependências, promovendo a separação de responsabilidades.
-- **Zod**: Ferramenta para validação de dados com tipagem estática.
-- **Helmet**: Middleware para segurança da aplicação.
-- **Morgan**: Middleware para registro de logs HTTP.
-- **Cors**: Middleware para configurar políticas de CORS.
-- **dotenv**: Carregamento de variáveis de ambiente de um arquivo `.env`.
+1. Arquitetura Limpa (Clean Architecture)
+   A estrutura segue os princípios de Clean Architecture, garantindo uma clara separação de responsabilidades entre as diferentes camadas do sistema. Isso significa que sua aplicação é:
 
-## 📂 Estrutura do Projeto
+- Escalável: Você pode adicionar novas funcionalidades de forma modular, sem comprometer o código existente.
+- Fácil de manter: Alterações em uma camada não afetam as outras camadas, facilitando a manutenção a longo prazo.
+- Fácil de testar: A separação das camadas facilita a criação de testes unitários e de integração.
 
-A estrutura do projeto segue uma organização modular, com camadas bem definidas, baseada em **Clean Architecture** e **DDD**:
+2. Domain-Driven Design (DDD)
+   Com o DDD, as entidades e a lógica de negócios estão isoladas da infraestrutura e da interface. Isso permite que você:
 
-```plaintext
-/src
-  ├── /config               # Configurações gerais do projeto
-  ├── /domain               # Entidades, repositórios e lógica de negócios
-  ├── /infrastructure       # Implementações de infraestrutura (banco de dados, serviços externos)
-  ├── /presentation         # Controladores e rotas de API
-  ├── /application          # Casos de uso e lógica de aplicação
-  ├── /shared               # Utilitários e middlewares compartilhados
-```
+- Crie modelos de domínio ricos, facilitando o entendimento do negócio e a colaboração entre equipes.
+- Mantenha a lógica de negócios isolada e centrada em torno de entidades, tornando o código mais coeso.
 
-## 🛠️ Funcionalidades Principais
+3. Injeção de Dependências
+   A injeção de dependências, utilizando a biblioteca tsyringe, permite:
 
-- **Servidor Express**: Configuração robusta com segurança e logging, utilizando middlewares como Helmet, Morgan e CORS.
-- **Banco de Dados MySQL**: Conexão automática com MySQL via TypeORM. Caso o banco não exista, ele será criado.
-- **Injeção de Dependências**: Uso de `tsyringe` para gerenciar a criação de instâncias e facilitar testes.
-- **Validação de Dados com Zod**: Validação de entrada de dados para garantir consistência e segurança nas requisições.
-- **DDD e Clean Architecture**: Camadas bem separadas (presentation, application, domain, infrastructure) para manter o código organizado, modular e fácil de escalar.
+- Facilidade para gerenciar dependências: O gerenciamento de dependências é feito de maneira centralizada, facilitando a testabilidade e a manutenção do código.
+- Adoção de boas práticas: A separação de responsabilidades é promovida pela injeção de dependências, reduzindo o acoplamento entre as classes.
 
-## ⚙️ Como Rodar o Projeto
+Exemplo:
+@injectable()
+export class FindByFilterInvoiceUseCase {
+constructor(@inject(InvoiceRepositoryImpl) private repository: InvoiceRepositoryInterface) {}
+// Lógica de negócios
+}
 
-1. Clone o repositório:
+4. Facilidade de Troca de Implementações
 
-   ```bash
-   git clone https://github.com/LeandroS4nt0s/clean-solid-service-ts.git
-   ```
+Não só a troca do banco de dados é facilitada, mas também outras implementações, como a troca de repositórios, serviços ou validações.
 
-2. Navegue até o diretório do projeto:
+Troca de Implementação de Banco de Dados
+A estrutura foi projetada de maneira que a troca entre as implementações de banco de dados (como MySQL e PostgreSQL) é simples. O código está organizado de forma modular, e a troca entre as implementações requer apenas uma pequena modificação na configuração do container de dependências.
 
-   ```bash
-   cd clean-solid-service-ts
-   ```
+Exemplo de implementação para MySQL:
+import { container } from 'tsyringe'
+import { MySQLImplementation } from '@infra/database/implementation'
 
-3. Instale as dependências:
+container.registerSingleton<DataBaseInterface<unknown>>('DataBaseService', MySQLImplementation)
 
-   ```bash
-   npm install
-   ```
+Exemplo de implementação para PostgreSQL:
+import { container } from 'tsyringe'
+import { PostgresImplementation } from '@infra/database/implementation'
 
-4. Crie um arquivo `.env` na raiz do projeto e defina as variáveis de ambiente necessárias. Exemplo:
+container.registerSingleton<DataBaseInterface<unknown>>('DataBaseService', PostgresImplementation)
 
-   ```plaintext
-      NODE_ENV=development
-      PORT=3000
-      DB_CLIENT=mysql
-      DB_HOST=localhost
-      DB_PORT=3306
-      DB_USER=root
-      DB_PASSWORD=root
-      DB_NAME=mydb
-      CORS_ORIGIN=http://localhost:8080
-   ```
+Troca de Repositórios
+A flexibilidade também se estende aos repositórios. O repositório InvoiceRepositoryImpl poderia ser facilmente trocado por outro repositório sem afetar a lógica de negócio ou a API. A camada de infraestrutura é desacoplada da camada de domínio, o que permite que você altere as implementações de persistência sem impacto nas camadas superiores.
 
-5. Execute o projeto:
+Exemplo:
 
-   ```bash
-   npm run dev
-   ```
+// Troca de Repositório de Fatura
+@injectable()
+export class FindByFilterInvoiceUseCase {
+constructor(@inject(InvoiceRepositoryImpl) private repository: InvoiceRepositoryInterface) {}
+async execute(dto: FilterInvoicesDTO): Promise<InvoiceEntity[]> {
+const criteria: InvoiceFilterCriteria = {
+referenceMonth: dto.referenceMonth,
+customerNumber: dto.customerNumber,
+}
 
-6. O servidor estará disponível em `http://localhost:3000`.
+    return this.repository.findByFilters(criteria)
 
-## 🏗️ Arquitetura
+}
+}
 
-Este boilerplate segue a arquitetura **Clean Architecture** com os seguintes princípios:
+5. Tratamento de Erros
 
-- **Presentation Layer**: Responsável por interagir com o mundo externo (controladores e rotas).
-- **Application Layer**: Contém a lógica da aplicação e casos de uso.
-- **Domain Layer**: Define as entidades e regras de negócios do sistema.
-- **Infrastructure Layer**: Implementação de detalhes, como acesso a banco de dados e serviços externos.
+O tratamento de erros foi simplificado com a implementação do asyncHandler e o middleware de erro.
 
-## Como Adicionar Novas Funcionalidades
+O **asyncHandler** ajuda a tratar erros assíncronos de forma centralizada, evitando a repetição de blocos try/catch em cada rota.
 
-Para adicionar novas funcionalidades à aplicação, siga este fluxo:
+Exemplo de uso do asyncHandler:
+import { asyncHandler } from '@shared/wrappers/asyncHandler'
 
-1. Crie um Caso de Uso: Caso o requisito envolva uma nova lógica de aplicação, crie um novo caso de uso na camada application.
-2. Crie uma Entidade de Domínio: Se for necessário modelar novas informações, crie uma nova entidade de domínio dentro da camada domain.
-3. Crie um Repositório: Se você precisa interagir com o banco de dados ou outros sistemas, crie um novo repositório na camada infra.
-4. Crie um Controlador: Para interagir com os casos de uso via API, crie um novo controlador na camada presentation.
-5. Crie as Validações: Se necessário, crie novos schemas de validação usando o Zod para validar dados de entrada.
+InvoiceRoutes.get(
+'/',
+asyncHandler(listAllInvoicesController.handle.bind(listAllInvoicesController))
+)
+InvoiceRoutes.get(
+'/filter',
+asyncHandler(findByFilterInvoiceController.handle.bind(findByFilterInvoiceController))
+)
 
-## Exemplos de Rotas
+O **middleware de erro** centraliza o tratamento de erros, permitindo que você capture exceções e retorne respostas adequadas ao cliente.
 
-Abaixo está um exemplo de como as rotas são definidas no projeto:
+Exemplo de uso do middleware de erro:
+import { errorMiddleware } from '@shared/middlewares/errorMiddleware'
 
-```javascript
-import InvoiceRoutes from '@presentation/http/modules/Invoice/InvoiceRoute'
-import { Router } from 'express'
+class Server {
+private app: Express
+private port: number
 
-const AppRoutes = Router()
-AppRoutes.use('/invoices', [InvoiceRoutes])
+constructor() {
+this.app = express()
+this.port = env.PORT
+}
 
-export { AppRoutes }
-```
+private setMiddlewares(): void {
+this.app.use(helmet())
+this.app.use(morgan('dev'))
+this.app.use(cors(appConfig.cors))
+this.app.use(express.json())
+this.app.use(errorMiddleware) // Middleware de erro
+}
+}
 
-## Estratégia de Inicialização e Desligamento
+6. Organizações de Donos de Bibliotecas Importantes
 
-- Inicialização: Durante a inicialização do servidor, a aplicação conecta-se ao banco de dados e realiza qualquer tarefa de setup necessária.
-- Desligamento: A aplicação realiza uma desconexão graciosa do banco de dados quando o servidor é desligado (SIGINT, SIGTERM).
+As bibliotecas mais importantes utilizadas neste template têm donos relevantes que contribuem para a comunidade de código aberto:
 
-## Testes
-
-Os testes unitários e de integração podem ser adicionados facilmente devido à separação clara de responsabilidades nas camadas do sistema.
-
-- Para realizar os testes, você pode criar testes para os casos de uso, testes para os controladores e testes para as entidades.
-
-  Recomendação: Utilize frameworks como Jest para facilitar a escrita e execução de testes.
-
----
-
-## Contribuindo
-
-1. Faça um fork deste repositório.
-2. Crie uma branch para a sua feature (git checkout -b minha-feature).
-3. Faça as alterações necessárias e envie um pull request.
-
----
-
-Happy coding! 😎
+- **Node.js**: Desenvolvido e mantido pela Node.js Foundation.
+- **TypeScript**: Criado e mantido pela Microsoft.
+- **TypeORM**: Criado e mantido pela comunidade de código aberto.
+- **tsyringe**: Desenvolvido pela comunidade, com foco em injeção de dependências para TypeScript.
+- **Zod**: Biblioteca para validação de esquemas, mantida por uma comunidade ativa.
+- **Express**: Criado e mantido pela comunidade, utilizado como framework HTTP minimalista.
+- **Helmet**: Criado e mantido pela comunidade para segurança em aplicações Express.
+- **Morgan**: Biblioteca de logging HTTP mantida pela comunidade.
+- **dotenv**: Utilizado para carregar variáveis de ambiente, mantido pela comunidade.
