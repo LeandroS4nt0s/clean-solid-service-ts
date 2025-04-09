@@ -49,7 +49,7 @@
     A configuração do serviço de banco de dados (`DataBaseService`) no container (`infrastructure/container/index.ts`) permite alternar entre diferentes implementações (como `MySQLImplementation` e `PostgresImplementation`) com uma simples mudança na configuração. A camada de aplicação e domínio interagem com uma interface (`DataBaseInterface`), tornando a troca transparente. A existência de pastas separadas para implementações de MySQL e PostgreSQL (`@infra/database/implementation/mysql/`, `@infra/database/implementation/postgres/`) reforça essa flexibilidade.
 
     ```typescript
-    // Exemplo de registro para MySQL em infrastructure/container/index.ts
+    // Exemplo de registro para MySQL em infrastructure/container/
     import { container } from 'tsyringe'
     import { MySQLImplementation } from '@infra/database/implementation/mysql/MySQLImplementation'
     import { DataBaseInterface } from '@infra/database/interface/DatabaseInterface'
@@ -137,7 +137,6 @@
     - **`onShutdownDataBaseTask` (`@infra/services/internal/tasks/onShutdown/onShutdownDataBaseTask.ts`)**: Esta função permite que você execute tarefas de limpeza importantes quando a aplicação está sendo desligada, como fechar a conexão com o banco de dados de forma segura, evitando perda de dados ou conexões pendentes. A configuração dos listeners de sinal (`process.on('SIGINT', shutdown)`, `process.on('SIGTERM', shutdown)`) garante que essa tarefa seja executada graciosamente.
 
     ```typescript
-    // @infra/services/internal/tasks/onStartup/onStartupDataBaseTask.ts
     import { DataBaseInterface } from '@infra/database/interface/DatabaseInterface'
     import { container } from 'tsyringe'
     import { DataSource } from 'typeorm'
@@ -147,7 +146,6 @@
       await DataBaseService.start()
     }
 
-    // @presentation/Server.ts (trecho com os listeners de shutdown)
     let isShuttingDown = false
     const shutdown = async () => {
       if (isShuttingDown) return
