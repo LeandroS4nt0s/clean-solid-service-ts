@@ -1,6 +1,6 @@
 import { InvoiceEntity } from '@domain/model/entities/InvoiceEntity'
 import { InvoiceRepositoryInterface } from '@domain/model/repositories/InvoIceRepository/InvoiceRepository'
-import { InvoiceRepositoryImpl } from '@infra/database/repositories/Invoice/RepositoryImpl'
+import { InvoiceRepositoryImpl } from '@infra/services/internal/database/repositories/Invoice/RepositoryImpl'
 import { injectable, inject } from 'tsyringe'
 
 @injectable()

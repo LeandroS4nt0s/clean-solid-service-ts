@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import { appConfig, env } from '@config'
-import { onShutdownDataBaseTask } from '@infra/services/internal/tasks/onShutdown/onShutdownDataBaseTask'
 import { onStartupDataBaseTask } from '@infra/services/internal/tasks/onStartup/onStartupDataBaseTask'
 import { AppRoutes } from '@presentation/http/routes/AppRoutes'
 import { errorMiddleware } from '@shared/middlewares/errorMiddleware'
@@ -9,10 +8,12 @@ import cors from 'cors'
 import express, { Express } from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import http from 'http'
 
 export class Server {
   private app: Express
   private port: number
+  private serverInstance?: http.Server
 
   constructor() {
     this.app = express()
@@ -25,6 +26,7 @@ export class Server {
       await this.connectDependencies()
     } catch (error) {
       this.handleError(error)
+      process.exit(1)
     }
   }
 
@@ -46,9 +48,17 @@ export class Server {
   }
 
   public start(): void {
-    this.app.listen(this.port, () => {
+    this.serverInstance = this.app.listen(this.port, () => {
       logger.info(`✅ Server is running on PORT:${this.port}`)
     })
+  }
+
+  public async stop(): Promise<void> {
+    if (this.serverInstance) {
+      this.serverInstance.close(() => {
+        logger.info('✅ Server has been stopped successfully')
+      })
+    }
   }
 
   public getApp(): Express {
@@ -67,20 +77,3 @@ export class Server {
     this.app.use(appConfig.apiPrefix, AppRoutes)
   }
 }
-
-let isShuttingDown = false
-const shutdown = async () => {
-  if (isShuttingDown) return
-  isShuttingDown = true
-  try {
-    logger.info('🔥 Gracefully shutting down...')
-    await onShutdownDataBaseTask()
-  } catch (error) {
-    logger.error('❌ Error during shutdown:', error)
-  } finally {
-    process.exit(0)
-  }
-}
-
-process.on('SIGINT', shutdown)
-process.on('SIGTERM', shutdown)

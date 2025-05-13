@@ -1,6 +1,6 @@
 import { InvoiceEntity } from '@domain/model/entities/InvoiceEntity'
 import { Money } from '@domain/model/valueObjects/Money'
-import { InvoiceModel } from '@infra/database/models/invoice/InvoiceModel'
+import { InvoiceModel } from '@infra/services/internal/database/models/invoice/InvoiceModel'
 
 export class InvoiceMapper {
   static toEntity(model: InvoiceModel): InvoiceEntity {

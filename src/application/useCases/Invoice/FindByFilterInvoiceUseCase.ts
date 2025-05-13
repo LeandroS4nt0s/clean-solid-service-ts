@@ -2,7 +2,7 @@ import { FilterInvoicesDTO } from '@application/useCases/Invoice/dtos/InvoiceDto
 import { InvoiceEntity } from '@domain/model/entities/InvoiceEntity'
 import { InvoiceRepositoryInterface } from '@domain/model/repositories/InvoIceRepository/InvoiceRepository'
 import { InvoiceFilterCriteria } from '@domain/model/repositories/InvoIceRepository/criteria/InvoiceFilterCriteria'
-import { InvoiceRepositoryImpl } from '@infra/database/repositories/Invoice/RepositoryImpl'
+import { InvoiceRepositoryImpl } from '@infra/services/internal/database/repositories/Invoice/RepositoryImpl'
 import { inject, injectable } from 'tsyringe'
 
 @injectable()

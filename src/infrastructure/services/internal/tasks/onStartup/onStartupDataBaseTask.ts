@@ -1,4 +1,4 @@
-import { DataBaseInterface } from '@infra/database/interface/DatabaseInterface'
+import { DataBaseInterface } from '@infra/services/internal/database/interface/DatabaseInterface'
 import { container } from 'tsyringe'
 import { DataSource } from 'typeorm'
 

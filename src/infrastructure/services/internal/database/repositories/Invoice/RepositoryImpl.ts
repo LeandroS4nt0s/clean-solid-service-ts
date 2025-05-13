@@ -1,9 +1,9 @@
 import { FilterInvoicesDTO } from '@application/useCases/Invoice/dtos/InvoiceDto'
 import { InvoiceEntity } from '@domain/model/entities/InvoiceEntity'
 import { InvoiceRepositoryInterface } from '@domain/model/repositories/InvoIceRepository/InvoiceRepository'
-import { DataBaseInterface } from '@infra/database/interface/DatabaseInterface'
-import { InvoiceMapper } from '@infra/database/mappers/invoice/InvoiceMapper'
-import { InvoiceModel } from '@infra/database/models/invoice/InvoiceModel'
+import { DataBaseInterface } from '@infra/services/internal/database/interface/DatabaseInterface'
+import { InvoiceMapper } from '@infra/services/internal/database/mappers/invoice/InvoiceMapper'
+import { InvoiceModel } from '@infra/services/internal/database/models/invoice/InvoiceModel'
 import { injectable, inject } from 'tsyringe'
 import { DataSource } from 'typeorm'
 

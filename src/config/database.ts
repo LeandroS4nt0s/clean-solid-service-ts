@@ -1,5 +1,8 @@
 import { env } from '@config'
-import { DatabaseConfig, DatabaseTypes } from '@infra/database/interface/DatabaseInterface'
+import {
+  DatabaseConfig,
+  DatabaseTypes,
+} from '@infra/services/internal/database/interface/DatabaseInterface'
 
 export const databaseConfig: DatabaseConfig = {
   client: env.DB_CLIENT as DatabaseTypes,

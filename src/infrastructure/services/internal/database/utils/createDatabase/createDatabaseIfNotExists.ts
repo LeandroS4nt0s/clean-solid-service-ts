@@ -1,7 +1,7 @@
 import { env } from '@config'
 import { InternalServerError } from '@domain/model/erros/InternalServerError'
-import { mysqlCreateDatabase } from '@infra/database/utils/createDatabase/mysqlCreateDatabase'
-import { postgresCreateDatabase } from '@infra/database/utils/createDatabase/postgresCreateDatabase'
+import { mysqlCreateDatabase } from '@infra/services/internal/database/utils/createDatabase/mysqlCreateDatabase'
+import { postgresCreateDatabase } from '@infra/services/internal/database/utils/createDatabase/postgresCreateDatabase'
 
 export const createDatabaseIfNotExists = async (
   host: string,

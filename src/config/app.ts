@@ -1,7 +1,7 @@
 import { env } from '@config'
 
 export const appConfig = {
-  apiPrefix: '/api',
+  apiPrefix: '/speakaccent/api',
   cors: {
     origin: env.CORS_ORIGIN,
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
