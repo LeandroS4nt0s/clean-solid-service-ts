@@ -145,21 +145,4 @@
       const DataBaseService = container.resolve<DataBaseInterface<DataSource>>('DataBaseService')
       await DataBaseService.start()
     }
-
-    let isShuttingDown = false
-    const shutdown = async () => {
-      if (isShuttingDown) return
-      isShuttingDown = true
-      try {
-        logger.info('🔥 Gracefully shutting down...')
-        await onShutdownDataBaseTask()
-      } catch (error) {
-        logger.error('❌ Error during shutdown:', error)
-      } finally {
-        process.exit(0)
-      }
-    }
-
-    process.on('SIGINT', shutdown)
-    process.on('SIGTERM', shutdown)
     ```
